@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Sample Article</title>
+
+	<!-- D3 -->
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+	<!-- CSS -->
+	<style>
+		body {
+			font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+			background-color: #f3f3f3;
+			text-align: center;
+		}
+
+		h1 {
+			font-size: 3em;
+			color: #19b698;
+			margin-bottom: 10px;
+		}
+
+		p {
+			color: #333333;
+			text-align: left;
+		}
+
+		button {
+			color: #666;
+			background-color: #fff;
+			padding: 5px 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			display: inline-block;
+			margin: 5px auto;
+		}
+
+		#main {
+			width: 75%;
+			display: block;
+			margin: 0px auto;
+		}
+
+		img {
+			margin-left: 10px;
+			margin-bottom: 5px;
+		}
+	</style>
+
+</head>
+<body>
+	<div id="main">
+		<h1>Sample Article</h1>
+
+		<button id="btnSelect">Selection</button>
+		<button id="btnRandom">Function as property</button>
+		<button id="btnFontSize">Data Binding</button>
+		<button id="btnTransitionAll">All with Transition</button>
+		<button id="btnReset" style="display: block;">Reset</button>
+
+		<p>
+			Lorem ipsum dolor sit amet, nam duis soluta dignissim ne. Affert consequat pro ea, ea vero summo antiopam mea. Vix mundi adolescens ut, at qui summo accusata. Affert consequat no sit. His ex zril oblique deseruisse, quo te enim inani ancillae, cum in quidam cotidieque. Ut pro alterum accusam persequeris. Ea utamur detraxit nec. Minim placerat id pro, qui consequat vulputate necessitatibus id, mel essent insolens sadipscing cu. Qui solet scaevola ei. Ut vix malis petentium, ex saepe doctus perfecto pro, nam accusata urbanitas et. Pri eu integre inermis, aeque tation regione eu ius. Sit ea tempor vivendo mediocritatem, in sit prima moderatius.
+		</p>
+		<p>
+			Sea eu inimicus voluptatibus, ne sit veri error persecuti. Justo similique ea duo, liber interpretaris ex eum. In quo nibh partem persius, eripuit fastidii petentium ne sit. Et possit quaeque nominavi usu, sapientem sententiae in mea, saperet oportere at mei. Mei ex nullam lucilius volutpat, alia salutandi ad mel. Est ne nominavi ponderum postulant, vix fastidii sensibus ne.
+		</p>
+		<p>
+			Doming petentium interpretaris an duo, ne qualisque erroribus duo, ne debitis temporibus vis. Ut nam tantas sensibus, qui debet labores ponderum an, ius in amet dolorem salutandi. Ex has fugit eirmod periculis. Sed intellegam sadipscing an, minimum neglegentur qui ad, brute splendide at vis. Brute voluptatum repudiandae in vix.
+		</p>
+		<p>
+			Nec ne errem platonem ullamcorper, idque partem verear ea sea. Malis periculis ad eam, autem quidam per et. Sit petentium signiferumque in, unum etiam dolore vel et. Per solum minimum posidonium ad, vix aperiam dolorum conceptam ea, ea deseruisse neglegentur vim. Inani vivendum suscipiantur te pri, est ei graeco scripserit. Quo utamur oblique epicuri no, id mundi molestie persequeris pro, cu novum bonorum mel. Vel elitr quaerendum ea.
+		</p>
+		<p>
+			Pro ad viris oporteat. Eruditi propriae reprehendunt ex mei. Sit elit bonorum sapientem an, duo stet accumsan aliquando ad. Sea te mazim insolens, ornatus temporibus eos an. Nec porro vidisse insolens in. Quo cu quod apeirian consetetur. Propriae suavitate maiestatis vis ut. Ferri dicta everti ad mel, quas mentitum vulputate ne mea. Ei mei omnium copiosae maluisset, ceteros expetenda eu vis, ad has velit erant causae.
+		</p>
+		<p>
+			An ullum facilisi similique mea, iusto scribentur vel et. Ius suscipit explicari scripserit ut, novum quaestio ius et, est quodsi forensibus ei. Ferri electram eos ea, ius at tincidunt adversarium, in ius inani iudico partem. Vitae dolore graecis ad his. Sea te case dolore aperiri, et paulo inermis oporteat est. Te ferri eirmod aperiri pro, utinam graeco equidem eam no.
+		</p>
+	</div>
+
+	<script>
+		document.getElementById('btnSelect').onclick = selection;
+		document.getElementById('btnRandom').onclick = randomColor;
+		document.getElementById('btnFontSize').onclick = fontSizeData;
+		document.getElementById('btnTransitionAll').onclick = transitionAll;
+		document.getElementById('btnReset').onclick = reset;
+
+		function selection() {
+			d3.selectAll('h1').style('color', '#2980b9');
+			d3.selectAll('p').style('color', '#cccccc');
+			d3.select('body').style('background-color', '#333333');
+		}
+
+		function randomColor() {
+			d3.selectAll("p").style("color", function() {
+			  	return "hsl(" + Math.random() * 360 + ",100%,50%)";
+			});
+		}
+
+		function fontSizeData() {
+			d3.selectAll("p")
+			    .data([4, 8, 15, 16, 23, 42])
+			    .style("font-size", function(d) { return d + "px"; });
+		}
+
+		function reset() {
+			d3.selectAll('h1').style('color', '#19b698');
+			d3.selectAll('p').style('color', '#333333');
+			d3.selectAll('p').style('font-size', '1em');
+			d3.select('body').style('background-color', '#f3f3f3');
+		}
+
+		function transitionAll() {
+			d3.select("body")
+				.transition()
+				.duration(2000)
+		    	.style('background-color', '#333333');
+
+		    d3.select("h1")
+		    	.transition()
+				.duration(2000)
+		    	.style('color', '#2980b9');
+
+		    d3.selectAll("p")
+			    .data([4, 8, 15, 16, 23, 42])
+			    .transition()
+			    .duration(2000)
+			    .style("font-size", function(d) { return d + "px"; })
+			    .style("color", function() {
+			    	return "hsl(" + Math.random() * 360 + ",100%,50%)";
+			    });
+		}
+
+
+			// // Without D3
+			// var titles = document.getElementsByTagName('h1');
+			// var paragraphs = document.getElementsByTagName('p');
+			// var body = document.body;
+
+			// for (var i = 0; i < titles.length; i++) {
+			// 	var title = titles.item(i);
+			// 	title.style.setProperty("color", "#2980b9", null);
+			// }
+
+			// for (var i = 0; i < paragraphs.length; i++) {
+			// 	var paragraph = paragraphs.item(i);
+			// 	paragraph.style.setProperty("color", "#cccccc", null);
+			// }
+
+			// body.style.setProperty("background-color", "#333333", null);
+
+			// // With D3
+			// d3.selectAll('h1').style('color', '#2980b9');
+			// d3.selectAll('p').style('color', '#cccccc');
+			// d3.select('body').style('background-color', '#333333');
+
+
+			// d3.selectAll('p')
+			// 	.style('color', '#cccccc')
+			// 	.style(‘font-size’, ‘14px’);
+
+
+			// d3.selectAll("p").style("color", function() {
+			//   	return "hsl(" + Math.random() * 360 + ",100%,50%)";
+			// });
+
+
+			// d3.selectAll("p")
+	  //   		.data([4, 8, 15, 16, 23, 42])
+			// 	.style("font-size", function(d) { return d + "px"; });
+
+
+			// d3.selectAll("p")
+	  //   		.data([4, 8, 15, 16, 23, 42])
+			// 	.enter().append(‘p’)
+			// 	.style("font-size", function(d) { return d + "px"; });
+
+
+
+
+
+
+	</script>
+</body>
+</html>
+
+

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Bar Chart Example</title>
+
+	<!-- CSS -->
+	<style>
+		body {
+			font-size: 24px;
+			color: #777;
+		}
+		div {
+			text-align: center;
+		}
+		span {
+			vertical-align: middle;
+			margin: 0px 5px;
+			color: #aaa;
+		}
+		.axis {
+			font: 12px sans-serif;
+		}
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+		.x.axis path {
+			display: none;
+		}
+	</style>
+
+	<body>
+		<div><h2>CSE Courses offered</h2></div>
+		<div><small>Split by level, Shown over 6 year span</small></div>
+		<div id="chart"></div>
+		<div id="slider"></div>
+
+	<!-- Scripts -->
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script>
+		var colors = ["#B05F6D", "#EB6B56", "#FFC153", "#47B39D", "#00587A", "#EE7469", "#FFF0D6", "#B8959B", "#836D6F", "#383732"];
+		var dataYears = [];
+		var dataYear = '2011';
+		var counter = 0;
+
+		var margin = {top: 20, right: 20, bottom: 30, left: 40};
+		var width = 960 - margin.left - margin.right;
+		var height = 500 - margin.top - margin.bottom;
+
+		var x = d3.scale.ordinal()
+			.rangeRoundBands([0, width], .1);
+
+		var y = d3.scale.linear()
+			.range([height, 0]);
+
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.orient("bottom");
+
+		var yAxis = d3.svg.axis()
+			.scale(y)
+			.orient("left");
+
+		var svg = d3.select("#chart")
+			.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		var slider = d3.select('#slider');
+
+		d3.csv("data.csv", type, function(error, data) {
+			if (error) throw error;
+
+			dataYears = d3.keys(data[0])
+			var index = dataYears.indexOf('Level');
+			dataYears.splice(index, 1);
+			dataYear = d3.min(dataYears);
+
+			x.domain(data.map(function(d) { return d.Level; }));
+			y.domain([0, 170]);
+
+			svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis);
+
+			svg.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+				.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", 6)
+				.attr("dy", ".71em")
+				.style("text-anchor", "end")
+				.text("Frequency");
+
+			svg.selectAll(".bar")
+				.data(data)
+				.enter().append("rect")
+				.attr("x", function(d) { return x(d.Level); })
+				.attr("width", x.rangeBand())
+				.attr("y", function(d) { return y(d[dataYear]); })
+				.attr("height", function(d) { return height - y(d[dataYear]); })
+				.attr("fill",function(d,i){return colors[i]});
+
+			slider.selectAll('span')
+				.data(dataYears)
+				.enter().append('span')
+				.attr("id", function(d) { return "year" + d; })
+				.html(function(d) { return d; })
+
+			d3.select('#year' + dataYears[0])
+			.style("color", "#00587A")
+			.style("font-size", "36px");
+		});
+		
+		function type(d) {
+			d[dataYear] = +d[dataYear];
+			return d;
+		}
+
+		setInterval(function() {
+			if(counter == dataYears.length - 1) {
+				counter = 0
+			}
+			else {
+				counter += 1;
+			}
+			dataYear = dataYears[counter];
+			redraw();
+		}, 1000);
+
+		function redraw() {
+			svg.selectAll("rect")
+				.transition()
+				.duration(1000)
+				.attr("y", function(d) { return y(d[dataYear]); })
+				.attr("height", function(d) { return height - y(d[dataYear]); });
+
+			slider.selectAll("span")
+				.transition()
+				.duration(1000)
+				.style("color", "#aaa")
+				.style("font-size", "24px");
+
+			d3.select("#year" + dataYear)
+				.transition()
+				.duration(1000)
+				.style("color", "#00587A")
+				.style("font-size", "36px");
+		}
+	</script>
+	</body>
+</html>
